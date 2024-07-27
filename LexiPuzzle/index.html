@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dictionary Game</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f0f0;
+        }
+        .navbar {
+            background-color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .navbar-brand {
+            font-weight: bold;
+            color: #007bff;
+        }
+        .hamburger-menu {
+            display: none;
+        }
+        @media (max-width: 767px) {
+            .hamburger-menu {
+                display: block;
+            }
+        }
+        .footer {
+            background-color: #ffffff;
+            text-align: center;
+            padding: 10px 0;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+            box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .container {
+            max-width: 1024px;
+            margin: auto;
+            padding-top: 20px;
+        }
+        .card {
+            border: none;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        #guess-input {
+            border: 2px solid #007bff;
+        }
+        #guess-button {
+            background-color: #007bff;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <img src="logo.png" alt="Logo" width="30" height="30" class="d-inline-block align-text-top">
+                Dictionary Game
+            </a>
+            <button class="navbar-toggler hamburger-menu" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Game Section -->
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Guess the Word</h1>
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div id="game-container" class="card">
+                    <div class="card-body">
+                        <h5 class="card-title" id="word-definition">Definition: <span id="definition"></span></h5>
+                        <input type="text" id="guess-input" class="form-control mt-3" placeholder="Enter your guess">
+                        <button class="btn btn-primary mt-3" id="guess-button">Submit Guess</button>
+                        <p id="result-message" class="mt-3"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; <span id="year"></span> SyntaxSage07 | <a href="https://github.com/yourusername">GitHub</a> | All rights reserved</p>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Auto-update the year in the footer
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Game logic
+        const words = [
+            { word: 'apple', definition: 'A fruit that is typically round and red, green, or yellow.' },
+            { word: 'banana', definition: 'A long curved fruit that grows in clusters and has soft pulpy flesh and yellow skin when ripe.' },
+            { word: 'cherry', definition: 'A small, round fruit that is typically bright or dark red.' }
+        ];
+        let currentWordIndex = Math.floor(Math.random() * words.length);
+        let attemptsLeft = 3;
+
+        document.getElementById('definition').textContent = words[currentWordIndex].definition;
+
+        document.getElementById('guess-button').addEventListener('click', function() {
+            const userGuess = document.getElementById('guess-input').value.trim().toLowerCase();
+            const resultMessage = document.getElementById('result-message');
+
+            if (userGuess === words[currentWordIndex].word) {
+                resultMessage.textContent = 'Congratulations! You guessed it right.';
+                resultMessage.className = 'alert alert-success';
+            } else {
+                attemptsLeft--;
+                if (attemptsLeft > 0) {
+                    resultMessage.textContent = `Incorrect! You have ${attemptsLeft} attempts left.`;
+                    resultMessage.className = 'alert alert-danger';
+                } else {
+                    resultMessage.textContent = 'Game Over! The correct word was ' + words[currentWordIndex].word;
+                    resultMessage.className = 'alert alert-danger';
+                }
+            }
+        });
+    </script>
+</body>
+</html>
